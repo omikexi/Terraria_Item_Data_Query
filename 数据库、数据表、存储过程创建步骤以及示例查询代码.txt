@@ -1,0 +1,154 @@
+mysql -u [用户名] -p[密码] -P [端口，默认为3306]
+
+创建数据库
+CREATE DATABASE IF NOT EXISTS terraria
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
+使用数据库
+USE terraria;
+
+创建数据表
+-- 创建armor_id表
+CREATE TABLE armor_id (
+  id double,
+  head varchar(255),
+  body varchar(255),
+  leg varchar(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 创建buff_id表
+CREATE TABLE buff_id (
+  id double,
+  name varchar(255),
+  inner_name varchar(255),
+  type char(2)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 创建command表
+CREATE TABLE command (
+  id double,
+  command varchar(255),
+  notes varchar(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 创建event表
+CREATE TABLE event (
+  id double,
+  name varchar(255),
+  inner_name varchar(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 创建monster_id表
+CREATE TABLE monster_id (
+  id double,
+  name varchar(255),
+  inner_name varchar(255),
+  description varchar(255) DEFAULT '' -- 仅保留非NULL的默认值
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 创建mount_id表
+CREATE TABLE mount_id (
+  id double,
+  name varchar(255),
+  inner_name varchar(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 创建object_id表
+CREATE TABLE object_id (
+  id double,
+  name varchar(255),
+  inner_name varchar(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 创建prefix_id表
+CREATE TABLE prefix_id (
+  id double,
+  name varchar(255)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+创建存储过程
+DELIMITER //
+
+-- buff_id表查询（name字段）
+CREATE PROCEDURE SearchBuff(IN keyword VARCHAR(255))
+BEGIN
+    SELECT * FROM buff_id WHERE name LIKE CONCAT('%', keyword, '%');
+END //
+
+-- event表查询（name字段）
+CREATE PROCEDURE SearchEvent(IN keyword VARCHAR(255))
+BEGIN
+    SELECT * FROM event WHERE name LIKE CONCAT('%', keyword, '%');
+END //
+
+-- monster_id表查询（name字段）
+CREATE PROCEDURE SearchMonster(IN keyword VARCHAR(255))
+BEGIN
+    SELECT * FROM monster_id WHERE name LIKE CONCAT('%', keyword, '%');
+END //
+
+-- mount_id表查询（name字段）
+CREATE PROCEDURE SearchMount(IN keyword VARCHAR(255))
+BEGIN
+    SELECT * FROM mount_id WHERE name LIKE CONCAT('%', keyword, '%');
+END //
+
+-- object_id表查询（name字段）
+CREATE PROCEDURE SearchObject(IN keyword VARCHAR(255))
+BEGIN
+    SELECT * FROM object_id WHERE name LIKE CONCAT('%', keyword, '%');
+END //
+
+-- prefix_id表查询（name字段）
+CREATE PROCEDURE SearchPrefix(IN keyword VARCHAR(255))
+BEGIN
+    SELECT * FROM prefix_id WHERE name LIKE CONCAT('%', keyword, '%');
+END //
+
+-- command表查询（notes字段）
+CREATE PROCEDURE SearchCommand(IN keyword VARCHAR(255))
+BEGIN
+    SELECT * FROM command WHERE notes LIKE CONCAT('%', keyword, '%');
+END //
+
+-- armor_id表查询（head/body/leg字段）
+CREATE PROCEDURE SearchArmor(IN keyword VARCHAR(255))
+BEGIN
+    SELECT * FROM armor_id 
+    WHERE head LIKE CONCAT('%', keyword, '%')
+    OR body LIKE CONCAT('%', keyword, '%')
+    OR leg LIKE CONCAT('%', keyword, '%');
+END //
+
+DELIMITER ;
+    
+
+
+运行示例代码
+
+直接查询（查询内容输入在两个百分号内）
+SELECT * FROM buff_id WHERE name LIKE '%%'; 		-- buff
+SELECT * FROM event WHERE name LIKE '%%'; 		-- 事件
+SELECT * FROM monster_id WHERE name LIKE '%%';	-- 怪物
+SELECT * FROM mount_id WHERE name LIKE '%%';	-- 坐骑
+SELECT * FROM object_id WHERE name LIKE '%%';		-- 物品
+SELECT * FROM prefix_id WHERE name LIKE '%%';		-- 前缀
+SELECT * FROM command WHERE notes LIKE '%%';	-- 指令
+SELECT * FROM armor_id WHERE CONCAT_WS(',', head, body, leg) LIKE CONCAT('%', '铁', '%');	-- 盔甲
+SELECT * FROM armor_id  WHERE CONCAT_WS(',', head, body, leg) LIKE CONCAT('%', '铁', '%');	--  盔甲
+
+调用存储过程（查询内容输入在两个单引号内）
+CALL SearchBuff(''); -- buff
+CALL SearchEvent(''); -- 事件
+CALL SearchMonster(''); -- 怪物
+CALL SearchMount(''); -- 坐骑
+CALL SearchObject(''); -- 物品
+CALL SearchCommand(''); -- 指令
+CALL SearchArmor(''); -- 盔甲
+
+
+
+
