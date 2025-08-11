@@ -46,7 +46,6 @@ terraria_query_tool/  <!-- 项目根目录 -->
     ├── 物品id.xlsx       # 物品ID及名称数据
     ├── 怪物id.xlsx       # 怪物ID及名称数据
     ├── 前缀id.xlsx       # 物品前缀ID数据
-    ├── buff_id.xlsx      # Buff效果ID数据
     ├── 坐骑id.xlsx       # 坐骑ID及名称数据
     └── 事件.xlsx         # 游戏事件数据
 ```
@@ -101,6 +100,7 @@ terraria_query_tool/  <!-- 项目根目录 -->
 
 
 通过本工具，玩家可快速查询游戏内各类关键数据，无需记忆复杂的ID或指令格式，提升游戏体验。
+
 
 
 
